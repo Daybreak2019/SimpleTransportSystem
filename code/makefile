@@ -25,13 +25,9 @@ ifndef DEBUG
 DEBUG=0 
 endif
 
-ifeq ($(DEBUG),1)
 export COMPILER_FLAGS += -g -O0
 export LINKER_FLAGS += -g
 export DEBUG_SFX = d
-else
-export DEBUG_SFX = 
-endif
  
 ifndef SHAREDLIB
 export SHAREDLIB=0

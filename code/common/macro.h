@@ -7,6 +7,7 @@
 #define _MACRO_H_ 
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory.h>
 #include <string>
 #include <vector>
 #include <list>
