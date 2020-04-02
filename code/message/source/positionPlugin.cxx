@@ -190,15 +190,6 @@ PositionPluginSupport_print_data(
             sample->vehicle,"vehicle", indent_level + 1);    
     }
 
-    RTICdrType_printLong(
-        &sample->stopNumber, "stopNumber", indent_level + 1);    
-
-    RTICdrType_printLong(
-        &sample->numStops, "numStops", indent_level + 1);    
-
-    RTICdrType_printLong(
-        &sample->timeBetweenStops, "timeBetweenStops", indent_level + 1);    
-
     if (sample->trafficConditions==NULL) {
         RTICdrType_printString(
             NULL,"trafficConditions", indent_level + 1);
@@ -208,7 +199,16 @@ PositionPluginSupport_print_data(
     }
 
     RTICdrType_printLong(
+        &sample->stopNumber, "stopNumber", indent_level + 1);    
+
+    RTICdrType_printLong(
+        &sample->numStops, "numStops", indent_level + 1);    
+
+    RTICdrType_printLong(
         &sample->fillInRatio, "fillInRatio", indent_level + 1);    
+
+    RTICdrType_printFloat(
+        &sample->timeBetweenStops, "timeBetweenStops", indent_level + 1);    
 
 }
 

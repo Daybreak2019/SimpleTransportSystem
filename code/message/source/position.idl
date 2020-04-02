@@ -9,15 +9,17 @@
  * not be liable for any incidental or consequential damages arising out of the
  * use or inability to use the software.
  */
- 
+
+const long POS_BUF_LEN=32;
+
 struct Position
 {
-   string timestamp;
-   string route;
-   string vehicle;
+   string<POS_BUF_LEN> timestamp;
+   string<POS_BUF_LEN> route;
+   string<POS_BUF_LEN> vehicle;
+   string<POS_BUF_LEN> trafficConditions;
    long stopNumber;
-   long numStops;
-   long timeBetweenStops;
-   string trafficConditions;
-   long fillInRatio;
+   long numStops;  
+   long fillInRatio;
+   float timeBetweenStops;
 };

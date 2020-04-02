@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 struct RouteInfo
 {
     vector<string> Buses;
@@ -18,6 +19,8 @@ struct RouteInfo
     int Stops;
     float StopTimes;
 };
+
+typedef map<string, RouteInfo*> T_RoutesMap;
 
 class Property
 {
@@ -27,7 +30,7 @@ private:
 	int m_NumRoutes;
     int m_NumVehicles;
     int m_NumBackupVehicles;
-    map<string, RouteInfo*> m_Routes;
+    T_RoutesMap m_Routes;
 
 public:
     Property(string Path="pub.properties")
@@ -38,10 +41,20 @@ public:
 
     ~Property() 
     {
-        for (map<string, RouteInfo*>::iterator it = m_Routes.begin(); it != m_Routes.end(); it++)
+        for (T_RoutesMap::iterator it = m_Routes.begin(); it != m_Routes.end(); it++)
         {
             delete it->second;
         }       
+    }
+
+    inline map<string, RouteInfo*>::iterator Begin ()
+    {
+        return m_Routes.begin();
+    }
+
+    inline map<string, RouteInfo*>::iterator End ()
+    {
+        return m_Routes.end();
     }
 
     inline int GetNumRoutes ()
@@ -69,7 +82,7 @@ public:
         printf ("numInitialBackupVehicles = %d\r\n", m_NumBackupVehicles);
 
         int Index = 1;
-        for (map<string, RouteInfo*>::iterator it = m_Routes.begin(); it != m_Routes.end(); it++)
+        for (T_RoutesMap::iterator it = m_Routes.begin(); it != m_Routes.end(); it++)
         {
             
             RouteInfo* R = it->second;
@@ -84,6 +97,7 @@ public:
         
     }
 
+private:
     inline void ReadLine (char* Line)
     {
         bool KeyFlag = true;
@@ -149,7 +163,7 @@ public:
         }
         else
         {
-            for (map<string, RouteInfo*>::iterator it = m_Routes.begin(); it != m_Routes.end(); it++)
+            for (T_RoutesMap::iterator it = m_Routes.begin(); it != m_Routes.end(); it++)
             {
                 if (strstr (Key, it->first.c_str()) != NULL)
                 {

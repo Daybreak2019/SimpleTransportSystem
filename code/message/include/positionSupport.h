@@ -8,8 +8,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef positionSupport_32923552_h
-#define positionSupport_32923552_h
+#ifndef positionSupport_32923627_h
+#define positionSupport_32923627_h
 
 /* Uses */
 #include "position.h"
@@ -62,5 +62,5 @@ DDS_DATAREADER_W_DATA_CONSISTENCY_CHECK(PositionDataReader, PositionSeq, Positio
 #define NDDSUSERDllExport
 #endif
 
-#endif  /* positionSupport_32923552_h */
+#endif  /* positionSupport_32923627_h */
 

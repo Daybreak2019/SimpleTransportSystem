@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef accidentPlugin_63819894_h
-#define accidentPlugin_63819894_h
+#ifndef accidentPlugin_63819960_h
+#define accidentPlugin_63819960_h
 
 #include "accident.h"
 
@@ -210,5 +210,5 @@ extern "C" {
 #define NDDSUSERDllExport
 #endif
 
-#endif /* accidentPlugin_63819894_h */
+#endif /* accidentPlugin_63819960_h */
 

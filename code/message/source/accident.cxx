@@ -47,9 +47,9 @@ DDS_TypeCode* Accident_get_typecode()
 {
     static RTIBool is_initialized = RTI_FALSE;
 
-    static DDS_TypeCode Accident_g_tc_timestamp_string = DDS_INITIALIZE_STRING_TYPECODE((255));
-    static DDS_TypeCode Accident_g_tc_route_string = DDS_INITIALIZE_STRING_TYPECODE((255));
-    static DDS_TypeCode Accident_g_tc_vehicle_string = DDS_INITIALIZE_STRING_TYPECODE((255));
+    static DDS_TypeCode Accident_g_tc_timestamp_string = DDS_INITIALIZE_STRING_TYPECODE(((ACC_BUF_LEN)));
+    static DDS_TypeCode Accident_g_tc_route_string = DDS_INITIALIZE_STRING_TYPECODE(((ACC_BUF_LEN)));
+    static DDS_TypeCode Accident_g_tc_vehicle_string = DDS_INITIALIZE_STRING_TYPECODE(((ACC_BUF_LEN)));
 
     static DDS_TypeCode_Member Accident_g_tc_members[4]=
     {
@@ -329,11 +329,11 @@ RTIBool Accident_initialize_w_params(
     }
 
     if (allocParams->allocate_memory) {
-        sample->timestamp = DDS_String_alloc((255));
+        sample->timestamp = DDS_String_alloc(((ACC_BUF_LEN)));
         RTICdrType_copyStringEx(
             &sample->timestamp,
             "",
-            (255),
+            ((ACC_BUF_LEN)),
             RTI_FALSE);
         if (sample->timestamp == NULL) {
             return RTI_FALSE;
@@ -343,7 +343,7 @@ RTIBool Accident_initialize_w_params(
             RTICdrType_copyStringEx(
                 &sample->timestamp,
                 "",
-                (255),
+                ((ACC_BUF_LEN)),
                 RTI_FALSE);
             if (sample->timestamp == NULL) {
                 return RTI_FALSE;
@@ -352,11 +352,11 @@ RTIBool Accident_initialize_w_params(
     }
 
     if (allocParams->allocate_memory) {
-        sample->route = DDS_String_alloc((255));
+        sample->route = DDS_String_alloc(((ACC_BUF_LEN)));
         RTICdrType_copyStringEx(
             &sample->route,
             "",
-            (255),
+            ((ACC_BUF_LEN)),
             RTI_FALSE);
         if (sample->route == NULL) {
             return RTI_FALSE;
@@ -366,7 +366,7 @@ RTIBool Accident_initialize_w_params(
             RTICdrType_copyStringEx(
                 &sample->route,
                 "",
-                (255),
+                ((ACC_BUF_LEN)),
                 RTI_FALSE);
             if (sample->route == NULL) {
                 return RTI_FALSE;
@@ -375,11 +375,11 @@ RTIBool Accident_initialize_w_params(
     }
 
     if (allocParams->allocate_memory) {
-        sample->vehicle = DDS_String_alloc((255));
+        sample->vehicle = DDS_String_alloc(((ACC_BUF_LEN)));
         RTICdrType_copyStringEx(
             &sample->vehicle,
             "",
-            (255),
+            ((ACC_BUF_LEN)),
             RTI_FALSE);
         if (sample->vehicle == NULL) {
             return RTI_FALSE;
@@ -389,7 +389,7 @@ RTIBool Accident_initialize_w_params(
             RTICdrType_copyStringEx(
                 &sample->vehicle,
                 "",
-                (255),
+                ((ACC_BUF_LEN)),
                 RTI_FALSE);
             if (sample->vehicle == NULL) {
                 return RTI_FALSE;
@@ -493,17 +493,17 @@ RTIBool Accident_copy(
 
         if (!RTICdrType_copyStringEx (
             &dst->timestamp, src->timestamp, 
-            (255) + 1, RTI_FALSE)){
+            ((ACC_BUF_LEN)) + 1, RTI_FALSE)){
             return RTI_FALSE;
         }
         if (!RTICdrType_copyStringEx (
             &dst->route, src->route, 
-            (255) + 1, RTI_FALSE)){
+            ((ACC_BUF_LEN)) + 1, RTI_FALSE)){
             return RTI_FALSE;
         }
         if (!RTICdrType_copyStringEx (
             &dst->vehicle, src->vehicle, 
-            (255) + 1, RTI_FALSE)){
+            ((ACC_BUF_LEN)) + 1, RTI_FALSE)){
             return RTI_FALSE;
         }
         if (!RTICdrType_copyLong (

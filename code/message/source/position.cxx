@@ -47,10 +47,10 @@ DDS_TypeCode* Position_get_typecode()
 {
     static RTIBool is_initialized = RTI_FALSE;
 
-    static DDS_TypeCode Position_g_tc_timestamp_string = DDS_INITIALIZE_STRING_TYPECODE((255));
-    static DDS_TypeCode Position_g_tc_route_string = DDS_INITIALIZE_STRING_TYPECODE((255));
-    static DDS_TypeCode Position_g_tc_vehicle_string = DDS_INITIALIZE_STRING_TYPECODE((255));
-    static DDS_TypeCode Position_g_tc_trafficConditions_string = DDS_INITIALIZE_STRING_TYPECODE((255));
+    static DDS_TypeCode Position_g_tc_timestamp_string = DDS_INITIALIZE_STRING_TYPECODE(((POS_BUF_LEN)));
+    static DDS_TypeCode Position_g_tc_route_string = DDS_INITIALIZE_STRING_TYPECODE(((POS_BUF_LEN)));
+    static DDS_TypeCode Position_g_tc_vehicle_string = DDS_INITIALIZE_STRING_TYPECODE(((POS_BUF_LEN)));
+    static DDS_TypeCode Position_g_tc_trafficConditions_string = DDS_INITIALIZE_STRING_TYPECODE(((POS_BUF_LEN)));
 
     static DDS_TypeCode_Member Position_g_tc_members[8]=
     {
@@ -110,7 +110,7 @@ DDS_TypeCode* Position_get_typecode()
             RTICdrTypeCodeAnnotations_INITIALIZER
         }, 
         {
-            (char *)"stopNumber",/* Member name */
+            (char *)"trafficConditions",/* Member name */
             {
                 3,/* Representation ID */
                 DDS_BOOLEAN_FALSE,/* Is a pointer? */
@@ -128,7 +128,7 @@ DDS_TypeCode* Position_get_typecode()
             RTICdrTypeCodeAnnotations_INITIALIZER
         }, 
         {
-            (char *)"numStops",/* Member name */
+            (char *)"stopNumber",/* Member name */
             {
                 4,/* Representation ID */
                 DDS_BOOLEAN_FALSE,/* Is a pointer? */
@@ -146,7 +146,7 @@ DDS_TypeCode* Position_get_typecode()
             RTICdrTypeCodeAnnotations_INITIALIZER
         }, 
         {
-            (char *)"timeBetweenStops",/* Member name */
+            (char *)"numStops",/* Member name */
             {
                 5,/* Representation ID */
                 DDS_BOOLEAN_FALSE,/* Is a pointer? */
@@ -164,7 +164,7 @@ DDS_TypeCode* Position_get_typecode()
             RTICdrTypeCodeAnnotations_INITIALIZER
         }, 
         {
-            (char *)"trafficConditions",/* Member name */
+            (char *)"fillInRatio",/* Member name */
             {
                 6,/* Representation ID */
                 DDS_BOOLEAN_FALSE,/* Is a pointer? */
@@ -182,7 +182,7 @@ DDS_TypeCode* Position_get_typecode()
             RTICdrTypeCodeAnnotations_INITIALIZER
         }, 
         {
-            (char *)"fillInRatio",/* Member name */
+            (char *)"timeBetweenStops",/* Member name */
             {
                 7,/* Representation ID */
                 DDS_BOOLEAN_FALSE,/* Is a pointer? */
@@ -229,11 +229,11 @@ DDS_TypeCode* Position_get_typecode()
     Position_g_tc_members[0]._representation._typeCode = (RTICdrTypeCode *)&Position_g_tc_timestamp_string;
     Position_g_tc_members[1]._representation._typeCode = (RTICdrTypeCode *)&Position_g_tc_route_string;
     Position_g_tc_members[2]._representation._typeCode = (RTICdrTypeCode *)&Position_g_tc_vehicle_string;
-    Position_g_tc_members[3]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_long_w_new;
+    Position_g_tc_members[3]._representation._typeCode = (RTICdrTypeCode *)&Position_g_tc_trafficConditions_string;
     Position_g_tc_members[4]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_long_w_new;
     Position_g_tc_members[5]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_long_w_new;
-    Position_g_tc_members[6]._representation._typeCode = (RTICdrTypeCode *)&Position_g_tc_trafficConditions_string;
-    Position_g_tc_members[7]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_long_w_new;
+    Position_g_tc_members[6]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_long_w_new;
+    Position_g_tc_members[7]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_float_w_new;
 
     /* Initialize the values for member annotations. */
     Position_g_tc_members[0]._annotations._defaultValue._d = RTI_XCDR_TK_STRING;
@@ -245,12 +245,8 @@ DDS_TypeCode* Position_get_typecode()
     Position_g_tc_members[2]._annotations._defaultValue._d = RTI_XCDR_TK_STRING;
     Position_g_tc_members[2]._annotations._defaultValue._u.string_value = (DDS_Char *) "";
 
-    Position_g_tc_members[3]._annotations._defaultValue._d = RTI_XCDR_TK_LONG;
-    Position_g_tc_members[3]._annotations._defaultValue._u.long_value = 0;
-    Position_g_tc_members[3]._annotations._minValue._d = RTI_XCDR_TK_LONG;
-    Position_g_tc_members[3]._annotations._minValue._u.long_value = RTIXCdrLong_MIN;
-    Position_g_tc_members[3]._annotations._maxValue._d = RTI_XCDR_TK_LONG;
-    Position_g_tc_members[3]._annotations._maxValue._u.long_value = RTIXCdrLong_MAX;
+    Position_g_tc_members[3]._annotations._defaultValue._d = RTI_XCDR_TK_STRING;
+    Position_g_tc_members[3]._annotations._defaultValue._u.string_value = (DDS_Char *) "";
 
     Position_g_tc_members[4]._annotations._defaultValue._d = RTI_XCDR_TK_LONG;
     Position_g_tc_members[4]._annotations._defaultValue._u.long_value = 0;
@@ -266,15 +262,19 @@ DDS_TypeCode* Position_get_typecode()
     Position_g_tc_members[5]._annotations._maxValue._d = RTI_XCDR_TK_LONG;
     Position_g_tc_members[5]._annotations._maxValue._u.long_value = RTIXCdrLong_MAX;
 
-    Position_g_tc_members[6]._annotations._defaultValue._d = RTI_XCDR_TK_STRING;
-    Position_g_tc_members[6]._annotations._defaultValue._u.string_value = (DDS_Char *) "";
+    Position_g_tc_members[6]._annotations._defaultValue._d = RTI_XCDR_TK_LONG;
+    Position_g_tc_members[6]._annotations._defaultValue._u.long_value = 0;
+    Position_g_tc_members[6]._annotations._minValue._d = RTI_XCDR_TK_LONG;
+    Position_g_tc_members[6]._annotations._minValue._u.long_value = RTIXCdrLong_MIN;
+    Position_g_tc_members[6]._annotations._maxValue._d = RTI_XCDR_TK_LONG;
+    Position_g_tc_members[6]._annotations._maxValue._u.long_value = RTIXCdrLong_MAX;
 
-    Position_g_tc_members[7]._annotations._defaultValue._d = RTI_XCDR_TK_LONG;
-    Position_g_tc_members[7]._annotations._defaultValue._u.long_value = 0;
-    Position_g_tc_members[7]._annotations._minValue._d = RTI_XCDR_TK_LONG;
-    Position_g_tc_members[7]._annotations._minValue._u.long_value = RTIXCdrLong_MIN;
-    Position_g_tc_members[7]._annotations._maxValue._d = RTI_XCDR_TK_LONG;
-    Position_g_tc_members[7]._annotations._maxValue._u.long_value = RTIXCdrLong_MAX;
+    Position_g_tc_members[7]._annotations._defaultValue._d = RTI_XCDR_TK_FLOAT;
+    Position_g_tc_members[7]._annotations._defaultValue._u.float_value = 0.0f;
+    Position_g_tc_members[7]._annotations._minValue._d = RTI_XCDR_TK_FLOAT;
+    Position_g_tc_members[7]._annotations._minValue._u.float_value = RTIXCdrFloat_MIN;
+    Position_g_tc_members[7]._annotations._maxValue._d = RTI_XCDR_TK_FLOAT;
+    Position_g_tc_members[7]._annotations._maxValue._u.float_value = RTIXCdrFloat_MAX;
 
     Position_g_tc._data._sampleAccessInfo =
     Position_get_sample_access_info();
@@ -341,19 +341,19 @@ RTIXCdrSampleAccessInfo *Position_get_sample_access_info()
     (RTIXCdrUnsignedLong) ((char *)&sample->vehicle - (char *)sample);
 
     Position_g_memberAccessInfos[3].bindingMemberValueOffset[0] = 
-    (RTIXCdrUnsignedLong) ((char *)&sample->stopNumber - (char *)sample);
-
-    Position_g_memberAccessInfos[4].bindingMemberValueOffset[0] = 
-    (RTIXCdrUnsignedLong) ((char *)&sample->numStops - (char *)sample);
-
-    Position_g_memberAccessInfos[5].bindingMemberValueOffset[0] = 
-    (RTIXCdrUnsignedLong) ((char *)&sample->timeBetweenStops - (char *)sample);
-
-    Position_g_memberAccessInfos[6].bindingMemberValueOffset[0] = 
     (RTIXCdrUnsignedLong) ((char *)&sample->trafficConditions - (char *)sample);
 
-    Position_g_memberAccessInfos[7].bindingMemberValueOffset[0] = 
+    Position_g_memberAccessInfos[4].bindingMemberValueOffset[0] = 
+    (RTIXCdrUnsignedLong) ((char *)&sample->stopNumber - (char *)sample);
+
+    Position_g_memberAccessInfos[5].bindingMemberValueOffset[0] = 
+    (RTIXCdrUnsignedLong) ((char *)&sample->numStops - (char *)sample);
+
+    Position_g_memberAccessInfos[6].bindingMemberValueOffset[0] = 
     (RTIXCdrUnsignedLong) ((char *)&sample->fillInRatio - (char *)sample);
+
+    Position_g_memberAccessInfos[7].bindingMemberValueOffset[0] = 
+    (RTIXCdrUnsignedLong) ((char *)&sample->timeBetweenStops - (char *)sample);
 
     Position_g_sampleAccessInfo.memberAccessInfos = 
     Position_g_memberAccessInfos;
@@ -442,11 +442,11 @@ RTIBool Position_initialize_w_params(
     }
 
     if (allocParams->allocate_memory) {
-        sample->timestamp = DDS_String_alloc((255));
+        sample->timestamp = DDS_String_alloc(((POS_BUF_LEN)));
         RTICdrType_copyStringEx(
             &sample->timestamp,
             "",
-            (255),
+            ((POS_BUF_LEN)),
             RTI_FALSE);
         if (sample->timestamp == NULL) {
             return RTI_FALSE;
@@ -456,7 +456,7 @@ RTIBool Position_initialize_w_params(
             RTICdrType_copyStringEx(
                 &sample->timestamp,
                 "",
-                (255),
+                ((POS_BUF_LEN)),
                 RTI_FALSE);
             if (sample->timestamp == NULL) {
                 return RTI_FALSE;
@@ -465,11 +465,11 @@ RTIBool Position_initialize_w_params(
     }
 
     if (allocParams->allocate_memory) {
-        sample->route = DDS_String_alloc((255));
+        sample->route = DDS_String_alloc(((POS_BUF_LEN)));
         RTICdrType_copyStringEx(
             &sample->route,
             "",
-            (255),
+            ((POS_BUF_LEN)),
             RTI_FALSE);
         if (sample->route == NULL) {
             return RTI_FALSE;
@@ -479,7 +479,7 @@ RTIBool Position_initialize_w_params(
             RTICdrType_copyStringEx(
                 &sample->route,
                 "",
-                (255),
+                ((POS_BUF_LEN)),
                 RTI_FALSE);
             if (sample->route == NULL) {
                 return RTI_FALSE;
@@ -488,11 +488,11 @@ RTIBool Position_initialize_w_params(
     }
 
     if (allocParams->allocate_memory) {
-        sample->vehicle = DDS_String_alloc((255));
+        sample->vehicle = DDS_String_alloc(((POS_BUF_LEN)));
         RTICdrType_copyStringEx(
             &sample->vehicle,
             "",
-            (255),
+            ((POS_BUF_LEN)),
             RTI_FALSE);
         if (sample->vehicle == NULL) {
             return RTI_FALSE;
@@ -502,7 +502,7 @@ RTIBool Position_initialize_w_params(
             RTICdrType_copyStringEx(
                 &sample->vehicle,
                 "",
-                (255),
+                ((POS_BUF_LEN)),
                 RTI_FALSE);
             if (sample->vehicle == NULL) {
                 return RTI_FALSE;
@@ -510,18 +510,12 @@ RTIBool Position_initialize_w_params(
         }
     }
 
-    sample->stopNumber = 0;
-
-    sample->numStops = 0;
-
-    sample->timeBetweenStops = 0;
-
     if (allocParams->allocate_memory) {
-        sample->trafficConditions = DDS_String_alloc((255));
+        sample->trafficConditions = DDS_String_alloc(((POS_BUF_LEN)));
         RTICdrType_copyStringEx(
             &sample->trafficConditions,
             "",
-            (255),
+            ((POS_BUF_LEN)),
             RTI_FALSE);
         if (sample->trafficConditions == NULL) {
             return RTI_FALSE;
@@ -531,7 +525,7 @@ RTIBool Position_initialize_w_params(
             RTICdrType_copyStringEx(
                 &sample->trafficConditions,
                 "",
-                (255),
+                ((POS_BUF_LEN)),
                 RTI_FALSE);
             if (sample->trafficConditions == NULL) {
                 return RTI_FALSE;
@@ -539,7 +533,13 @@ RTIBool Position_initialize_w_params(
         }
     }
 
+    sample->stopNumber = 0;
+
+    sample->numStops = 0;
+
     sample->fillInRatio = 0;
+
+    sample->timeBetweenStops = 0.0f;
 
     return RTI_TRUE;
 }
@@ -602,7 +602,6 @@ void Position_finalize_w_params(
         sample->vehicle=NULL;
 
     }
-
     if (sample->trafficConditions != NULL) {
         DDS_String_free(sample->trafficConditions);
         sample->trafficConditions=NULL;
@@ -641,17 +640,22 @@ RTIBool Position_copy(
 
         if (!RTICdrType_copyStringEx (
             &dst->timestamp, src->timestamp, 
-            (255) + 1, RTI_FALSE)){
+            ((POS_BUF_LEN)) + 1, RTI_FALSE)){
             return RTI_FALSE;
         }
         if (!RTICdrType_copyStringEx (
             &dst->route, src->route, 
-            (255) + 1, RTI_FALSE)){
+            ((POS_BUF_LEN)) + 1, RTI_FALSE)){
             return RTI_FALSE;
         }
         if (!RTICdrType_copyStringEx (
             &dst->vehicle, src->vehicle, 
-            (255) + 1, RTI_FALSE)){
+            ((POS_BUF_LEN)) + 1, RTI_FALSE)){
+            return RTI_FALSE;
+        }
+        if (!RTICdrType_copyStringEx (
+            &dst->trafficConditions, src->trafficConditions, 
+            ((POS_BUF_LEN)) + 1, RTI_FALSE)){
             return RTI_FALSE;
         }
         if (!RTICdrType_copyLong (
@@ -663,16 +667,11 @@ RTIBool Position_copy(
             return RTI_FALSE;
         }
         if (!RTICdrType_copyLong (
-            &dst->timeBetweenStops, &src->timeBetweenStops)) { 
-            return RTI_FALSE;
-        }
-        if (!RTICdrType_copyStringEx (
-            &dst->trafficConditions, src->trafficConditions, 
-            (255) + 1, RTI_FALSE)){
-            return RTI_FALSE;
-        }
-        if (!RTICdrType_copyLong (
             &dst->fillInRatio, &src->fillInRatio)) { 
+            return RTI_FALSE;
+        }
+        if (!RTICdrType_copyFloat (
+            &dst->timeBetweenStops, &src->timeBetweenStops)) { 
             return RTI_FALSE;
         }
 

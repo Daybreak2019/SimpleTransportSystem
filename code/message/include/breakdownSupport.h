@@ -8,8 +8,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef breakdownSupport_1458270261_h
-#define breakdownSupport_1458270261_h
+#ifndef breakdownSupport_1458270327_h
+#define breakdownSupport_1458270327_h
 
 /* Uses */
 #include "breakdown.h"
@@ -62,5 +62,5 @@ DDS_DATAREADER_W_DATA_CONSISTENCY_CHECK(BreakdownDataReader, BreakdownSeq, Break
 #define NDDSUSERDllExport
 #endif
 
-#endif  /* breakdownSupport_1458270261_h */
+#endif  /* breakdownSupport_1458270327_h */
 

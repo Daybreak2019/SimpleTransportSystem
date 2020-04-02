@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef position_32923552_h
-#define position_32923552_h
+#ifndef position_32923627_h
+#define position_32923627_h
 
 #ifndef NDDS_STANDALONE_TYPE
 #ifndef ndds_cpp_h
@@ -20,6 +20,8 @@ or consult the RTI Connext manual.
 #else
 #include "ndds_standalone_type.h"
 #endif
+
+static const DDS_Long POS_BUF_LEN= 32;
 
 extern "C" {
 
@@ -46,11 +48,11 @@ class Position
     DDS_Char *   timestamp ;
     DDS_Char *   route ;
     DDS_Char *   vehicle ;
+    DDS_Char *   trafficConditions ;
     DDS_Long   stopNumber ;
     DDS_Long   numStops ;
-    DDS_Long   timeBetweenStops ;
-    DDS_Char *   trafficConditions ;
     DDS_Long   fillInRatio ;
+    DDS_Float   timeBetweenStops ;
 
 };
 #if (defined(RTI_WIN32) || defined (RTI_WINCE) || defined(RTI_INTIME)) && defined(NDDS_USER_DLL_EXPORT)

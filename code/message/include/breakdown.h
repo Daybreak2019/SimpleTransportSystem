@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef breakdown_1458270261_h
-#define breakdown_1458270261_h
+#ifndef breakdown_1458270327_h
+#define breakdown_1458270327_h
 
 #ifndef NDDS_STANDALONE_TYPE
 #ifndef ndds_cpp_h
@@ -20,6 +20,8 @@ or consult the RTI Connext manual.
 #else
 #include "ndds_standalone_type.h"
 #endif
+
+static const DDS_Long BRK_BUF_LEN= 32;
 
 extern "C" {
 

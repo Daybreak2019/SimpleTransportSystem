@@ -1,31 +1,28 @@
 
 //#############################################################################
 //# Author: Wen Li
-//# Date  : 3/31/2020
-//# Description: class define for vehicle
+//# Date  : 4/01/2020
+//# Description: class define for simulator for ACC/BRK, LIGHT/WEIGHT TRAFFIC
 //##############################################################################
 
-#ifndef _VEHICLE_H_
-#define _VEHICLE_H_
+#ifndef _SIMULATOR_H_
+#define _SIMULATOR_H_
 #include "macro.h"
+#include "route.h"
+
 
 using namespace std;
 
-class Vehicle
+class Simulator
 {
 private:
-    string m_BusName;
-    int m_Attr;
-    int m_Status;
-    int m_RoundTime;
+    vector<Route> *m_RouteSet;
+
     
 public:
-    Vehicle(string &BusName)
+    Vehicle(vector<Route> *RouteSet)
     {
-        m_BusName = BusName;
-        m_Status  = VEHICLE_ST_NOR;
-        m_Attr    = VEHICLE_ATTR_USE;
-        m_RoundTime = 0;
+        m_RouteSet = RouteSet;
     }
 
     ~Vehicle() 
@@ -36,16 +33,14 @@ public:
 
 private:
 
-
+    inline void Init ()
+    {
+    }
 
 public:
-    inline char* GetBusName ()
-    {
-        return (char*)m_BusName.c_str();
-    }
-    
     inline void SetAttr (int Attr)
     {
+        assert (Attr == VEHICLE_NORMAL || Attr == VEHICLE_BACKUP);
         m_Attr = Attr;
     }
 
@@ -67,16 +62,6 @@ public:
     inline int GetFillinRatio ()
     {
         return (random () %101);
-    }
-
-    inline void IncRoundTime ()
-    {
-        m_RoundTime++;
-    }
-
-    inline int GetRoundTime ()
-    {
-        return m_RoundTime;
     }
 
 

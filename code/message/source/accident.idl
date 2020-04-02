@@ -9,12 +9,14 @@
  * not be liable for any incidental or consequential damages arising out of the
  * use or inability to use the software.
  */
- 
+
+const long ACC_BUF_LEN=32;
+
 struct Accident 
 {
-   string timestamp;
-   string route;
-   string vehicle;
+   string<ACC_BUF_LEN> timestamp;
+   string<ACC_BUF_LEN> route;
+   string<ACC_BUF_LEN> vehicle;
    long stopNumber;
 };
 

@@ -24,27 +24,29 @@
 
 SOURCE_DIR = source
 HEADER_DIR = include
-COMMON_HEADER = $(ROOT_PATH)/common
 
-CUR_INCLUDES = $(INCLUDES) -I$(HEADER_DIR) -I$(COMMON_HEADER)
-CUR_COMPILER_FLAGS = $(COMPILER_FLAGS) -fpic
+COMMON_HEADER = $(ROOT_PATH)/common
+MSG_HEADER = $(ROOT_PATH)/message/include
+
+CUR_INCLUDES = -I$(COMMON_HEADER) -I$(MSG_HEADER) -I$(INCLUDES) -I$(HEADER_DIR)
+CUR_LIBS = $(LIB_PATH)/libmessage.so $(LIBS)
 
 SOURCE_FILES = $(wildcard $(SOURCE_DIR)/*.cxx)
 OBJ_FILES = $(addprefix $(OBJ_PATH)/, $(addsuffix .o,$(notdir $(basename $(SOURCE_FILES)))))
 
-TARGET = $(LIB_PATH)/libmessage.so
+TARGET = $(BIN_PATH)/passanger
 
 .PHONY:all clean
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ_FILES)
-	@if [ ! -d $(LIB_PATH) ];then mkdir $(LIB_PATH); fi
-	$(LINKER) -shared $(LINKER_FLAGS) -o $@ $^ $(LIBS)
+	@if [ ! -d $(BIN_PATH) ];then mkdir $(BIN_PATH); fi
+	$(LINKER) $(LINKER_FLAGS) -o $@ $^ $(CUR_LIBS)
 	
 $(OBJ_PATH)/%.o: $(SOURCE_DIR)/%.cxx
 	@if [ ! -d $(OBJ_PATH) ];then mkdir $(OBJ_PATH); fi
-	$(COMPILER) $(CUR_COMPILER_FLAGS) -o $@ $(DEFINES) $(CUR_INCLUDES) -c $<
+	$(COMPILER) $(COMPILER_FLAGS) -o $@ $(DEFINES) $(CUR_INCLUDES) -c $<
 
 clean:
 	rm -rf $(OBJ_PATH) $(TARGET)

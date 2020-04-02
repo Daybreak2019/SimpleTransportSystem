@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef accident_63819894_h
-#define accident_63819894_h
+#ifndef accident_63819960_h
+#define accident_63819960_h
 
 #ifndef NDDS_STANDALONE_TYPE
 #ifndef ndds_cpp_h
@@ -20,6 +20,8 @@ or consult the RTI Connext manual.
 #else
 #include "ndds_standalone_type.h"
 #endif
+
+static const DDS_Long ACC_BUF_LEN= 32;
 
 extern "C" {
 

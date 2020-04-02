@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef positionPlugin_32923552_h
-#define positionPlugin_32923552_h
+#ifndef positionPlugin_32923627_h
+#define positionPlugin_32923627_h
 
 #include "position.h"
 
@@ -210,5 +210,5 @@ extern "C" {
 #define NDDSUSERDllExport
 #endif
 
-#endif /* positionPlugin_32923552_h */
+#endif /* positionPlugin_32923627_h */
 

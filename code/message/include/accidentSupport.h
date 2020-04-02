@@ -8,8 +8,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef accidentSupport_63819894_h
-#define accidentSupport_63819894_h
+#ifndef accidentSupport_63819960_h
+#define accidentSupport_63819960_h
 
 /* Uses */
 #include "accident.h"
@@ -62,5 +62,5 @@ DDS_DATAREADER_W_DATA_CONSISTENCY_CHECK(AccidentDataReader, AccidentSeq, Acciden
 #define NDDSUSERDllExport
 #endif
 
-#endif  /* accidentSupport_63819894_h */
+#endif  /* accidentSupport_63819960_h */
 

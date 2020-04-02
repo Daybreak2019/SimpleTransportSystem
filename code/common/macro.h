@@ -35,9 +35,22 @@
 #define LightMsg(msg) (std::string(KBLU) + std::string(msg) + std::string(KNRM))
 /////////////////////////////////////////////////////////////////////////////////
 
+#define VEHICLE_ROUND_TIMES      (3)
 
-#define VEHICLE_NORMAL      (0)
-#define VEHICLE_BACKUP      (1)
+#define VEHICLE_ATTR_USE         (0)
+#define VEHICLE_ATTR_BACKUP      (1)
+
+#define VEHICLE_ST_NOR           (1)
+#define VEHICLE_ST_ACC           (2)
+#define VEHICLE_ST_BRK           (3)
+
+
+#define SEC_TO_NSEC              (1000000000)
+
+
+#define MESSAGE_TOPIC_ACCIDENT   ("P3564_EECS_WenLi: PT/ALR/ACC")
+#define MESSAGE_TOPIC_POSITION   ("P3564_EECS_WenLi: PT/POS")
+#define MESSAGE_TOPIC_BREAKDOWN  ("P3564_EECS_WenLi: PT/ALR/BRK")
 
 
 
