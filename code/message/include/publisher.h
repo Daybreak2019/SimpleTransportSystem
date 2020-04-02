@@ -24,6 +24,7 @@ public:
     {
         m_Writer = NULL;
         m_MsgTopic = MsgTopic;
+        m_Participant = NULL;
     }
 
     ~Publisher() 
@@ -32,7 +33,7 @@ public:
     }
 private:
     DDSDomainParticipant* GetParticipant ();
-    
+
 protected:
     int Init ();
     int Shutdown();

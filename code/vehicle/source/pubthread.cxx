@@ -5,10 +5,6 @@
 //##############################################################################
 #include "pubthread.h"
 
-//PositionPublisher* PubThread::m_PosPublisher = new PositionPublisher (string(MESSAGE_TOPIC_POSITION));
-//BreakownPublisher* PubThread::m_BrkPublisher = new BreakownPublisher (string(MESSAGE_TOPIC_BREAKDOWN));
-//AccidentPublisher* PubThread::m_AccPublisher = new AccidentPublisher (string(MESSAGE_TOPIC_ACCIDENT));
-
 bool PubThread::IsAccHappen ()
 {
     return false;

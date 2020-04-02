@@ -6,6 +6,24 @@
 #include "property.h"
 #include "pubthread.h"
 
+static void SetQos (int MaxObjects)
+{
+    DDS_DomainParticipantFactoryQos factoryQoS;
+    DDSTheParticipantFactory->get_qos(factoryQoS);
+    
+    cout<<"====>read resource_limits.max_objects_per_thread = "
+        <<factoryQoS.resource_limits.max_objects_per_thread<<endl;
+        
+    factoryQoS.resource_limits.max_objects_per_thread = MaxObjects;
+    DDSTheParticipantFactory->set_qos(factoryQoS);
+
+    cout<<"====>write resource_limits.max_objects_per_thread = "
+        <<factoryQoS.resource_limits.max_objects_per_thread<<endl;
+
+    return;
+}
+
+
 void *PubthreadProc (void* Arg)
 {
     PubThread *PubThr = (PubThread *)Arg;
@@ -42,7 +60,6 @@ void PubLauncher (vector<Route> &RtSet)
 
             PubThreadSet.push_back (PubThr);
         }
-        break;
     }
     
     while (1);
@@ -50,6 +67,8 @@ void PubLauncher (vector<Route> &RtSet)
 
 int main(int argc, char *argv[])
 {
+    SetQos (4096);
+    
     /* Rread pub.properties */
     Property Pro ("../pub.properties");
     Pro.Dump ();

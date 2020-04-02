@@ -45,7 +45,6 @@ public:
 		m_Route   = Rt;
         m_CurStop = StartStop;
 
-        #if 1
         m_PosPublisher = new PositionPublisher (string(MESSAGE_TOPIC_POSITION));
         assert (m_PosPublisher != NULL);
 
@@ -54,7 +53,6 @@ public:
 
         m_AccPublisher = new AccidentPublisher (string(MESSAGE_TOPIC_ACCIDENT));
         assert (m_AccPublisher != NULL);
-        #endif
     }
 
     ~PubThread() 
