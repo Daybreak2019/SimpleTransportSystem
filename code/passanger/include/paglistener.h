@@ -2,11 +2,11 @@
 //#############################################################################
 //# Author: Wen Li
 //# Date  : 4/01/2020
-//# Description: three message listener
+//# Description: three message listener for passanger
 //##############################################################################
 
-#ifndef _MSGLISTENER_H_
-#define _MSGLISTENER_H_
+#ifndef _PAGLISTENER_H_
+#define _PAGLISTENER_H_
 #include "listener.h"
 #include "breakdownSupport.h"
 #include "accidentSupport.h"
@@ -59,5 +59,6 @@ public:
     
     virtual void on_data_available(DDSDataReader* reader);
 };
+
 
 #endif

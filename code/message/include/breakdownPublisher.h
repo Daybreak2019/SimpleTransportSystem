@@ -25,9 +25,7 @@ public:
         Shutdown ();        
     }
 
-    int PublishMsg(char *TimeStamp, char *Route, char *Vehicle,
-                      char *TrafficCon, int FillInRatio, int StopNumber, 
-                      int NumStops, float TimeBetweenStops)
+    int PublishMsg(char *TimeStamp, char *Route, char *Vehicle, int StopNumber)
     {
         int Ret = RT_FAIL;
         Breakdown *BrkMsg = NULL;

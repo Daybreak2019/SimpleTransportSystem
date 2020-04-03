@@ -24,6 +24,8 @@ private:
 	float m_TimeBtnStops;
 	vector<Vehicle> m_Buses;
 
+    pthread_mutex_t m_Mutex;
+
 public:
 	Route(string &RouteName, 
            int NumVehicles,
@@ -44,12 +46,9 @@ public:
         for (vector<string>::iterator It = Buses.begin(); It != Buses.end(); It++)
         {
             m_Buses.push_back (Vehicle(*It));
-            //cout<<*It<<" ";
         }
-        //cout<<")"<<endl;
 
-        /* the last bus is set to backup */
-        m_Buses[m_Buses.size()-1].SetAttr (VEHICLE_ATTR_BACKUP);
+        pthread_mutex_init(&m_Mutex, NULL);
     }
 
     ~Route() 
@@ -65,6 +64,11 @@ public:
     inline vector<Vehicle>::iterator BusEnd ()
     {
         return m_Buses.end();
+    }
+    
+    inline int GetBusNum ()
+    {
+        return m_NumVehicles;
     }
 
     inline char* GetRouteName ()
@@ -82,26 +86,42 @@ public:
         return m_TimeBtnStops;
     }
 
+    inline void SetBusStatus (Vehicle *Bus, int Status)
+    {
+        pthread_mutex_lock(&m_Mutex);
+        for (vector<Vehicle>::iterator It = m_Buses.begin(); It != m_Buses.end(); It++)
+        {
+            Vehicle * CurBus= &(*It);
+            if (CurBus == Bus)
+            {
+                CurBus->SetStatus (Status);
+                //printf ("====> set %s status %d \r\n", CurBus->GetBusName (), Status);
+                break;
+            }
+        }
+        pthread_mutex_unlock(&m_Mutex);
+
+        return;
+    }
+
     inline Vehicle* AllotBus ()
     {
+        Vehicle *AltBus = NULL;
+        
+        pthread_mutex_lock(&m_Mutex);
         for (vector<Vehicle>::iterator It = m_Buses.begin(); It != m_Buses.end(); It++)
         {
             Vehicle *Bus = &(*It);
-            if (Bus->GetAttr () == VEHICLE_ATTR_BACKUP)
+            if (Bus->GetStatus () == VEHICLE_ST_IDLE)
             {
-                Bus->SetAttr (VEHICLE_ATTR_USE);
-                return Bus;
+                Bus->SetStatus (VEHICLE_ST_USE);
+                AltBus = Bus;
+                break;
             }
         }
+        pthread_mutex_unlock(&m_Mutex);
 
-        return NULL;
-    }
-
-    inline void ReleaseBus (Vehicle* Bus)
-    {
-        Bus->SetAttr (int VEHICLE_ATTR_BACKUP);
-
-        return;
+        return AltBus;
     }
 };
 

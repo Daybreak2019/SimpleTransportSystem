@@ -41,8 +41,9 @@ void BreakdownListener::on_data_available(DDSDataReader* reader)
             continue;
         }
 
-        printf("[BreakdownType]Received data\n"); 
-        BreakdownTypeSupport::print_data(&data_seq[i]);
+        m_Passanger->BrkMsgProc (&data_seq[i]);
+        //cout<<"==>Breakdown Message:"<<endl;
+        //BreakdownTypeSupport::print_data(&data_seq[i]);
     }
     
     retcode = Breakdown_reader->return_loan(data_seq, info_seq);
@@ -89,9 +90,8 @@ void AccidentListener::on_data_available(DDSDataReader* reader)
         {
             continue;            
         }
-        
-        printf("[AccidentType]Received data\n");
-        AccidentTypeSupport::print_data(&data_seq[i]);
+
+        m_Passanger->AccMsgProc (&data_seq[i]);
     }
 
     retcode = Accident_reader->return_loan(data_seq, info_seq);
@@ -136,10 +136,7 @@ void PositionListener::on_data_available(DDSDataReader* reader)
             continue;            
         }
 
-        /* Passenger1 [S, E]: */
-        cout<<"----------------------------------------------------------\r\n";
-        cout<<m_Passanger->GetName ()<<":";
-        PositionTypeSupport::print_data(&data_seq[i]); 
+        m_Passanger->PosMsgProc (&data_seq[i]);
     }
 
     retcode = Position_reader->return_loan(data_seq, info_seq);

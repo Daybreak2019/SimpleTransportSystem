@@ -15,17 +15,19 @@ class Vehicle
 {
 private:
     string m_BusName;
-    int m_Attr;
     int m_Status;
-    int m_RoundTime;
+    int m_BrkTime;
+    int m_RoundNum;
+
+    map<int, int> m_Stop2Times;
     
 public:
     Vehicle(string &BusName)
     {
         m_BusName = BusName;
-        m_Status  = VEHICLE_ST_NOR;
-        m_Attr    = VEHICLE_ATTR_USE;
-        m_RoundTime = 0;
+        m_Status  = VEHICLE_ST_IDLE;
+        m_BrkTime = 0;
+        m_RoundNum = 0;
     }
 
     ~Vehicle() 
@@ -43,20 +45,24 @@ public:
     {
         return (char*)m_BusName.c_str();
     }
-    
-    inline void SetAttr (int Attr)
-    {
-        m_Attr = Attr;
-    }
 
-    inline int GetAttr ()
+    inline int GetBrkTime ()
     {
-        return m_Attr;
+        return m_BrkTime;
     }
 
     inline void SetStatus (int Status)
     {
         m_Status = Status;
+        if (Status == VEHICLE_ST_BRK)
+        {
+            /* record the breakdown time */
+            m_BrkTime = time (0);
+        }
+        else if (Status == VEHICLE_ST_IDLE)
+        {
+            m_BrkTime = 0;
+        }
     }
 
     inline int GetStatus ()
@@ -69,14 +75,44 @@ public:
         return (random () %101);
     }
 
-    inline void IncRoundTime ()
+    inline void IncRoundNum ()
     {
-        m_RoundTime++;
+        m_RoundNum++;
     }
 
-    inline int GetRoundTime ()
+    inline int GetRoundNum ()
     {
-        return m_RoundTime;
+        return m_RoundNum;
+    }
+
+    inline void ResetRoundNum ()
+    {
+        m_RoundNum = 0;
+    }
+
+    inline void IncStopNum (int Stop)
+    {
+        if (m_Stop2Times.find (Stop) == m_Stop2Times.end())
+        {
+            m_Stop2Times[Stop] = 1;
+        }
+        else
+        {
+            m_Stop2Times[Stop]++;;
+        }
+        //cout<<m_BusName<<": Stop"<<Stop<<" "<<m_Stop2Times[Stop]<<" times\n";
+    }
+
+    inline int GetStopNum (int Stop)
+    {
+        if (m_Stop2Times.find (Stop) == m_Stop2Times.end())
+        {
+            return 0;
+        }
+        else
+        {
+            return m_Stop2Times[Stop];
+        }
     }
 
 

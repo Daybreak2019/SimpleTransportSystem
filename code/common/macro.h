@@ -37,12 +37,13 @@
 
 #define VEHICLE_ROUND_TIMES      (3)
 
-#define VEHICLE_ATTR_USE         (0)
-#define VEHICLE_ATTR_BACKUP      (1)
-
-#define VEHICLE_ST_NOR           (1)
+#define VEHICLE_ST_IDLE          (0)
+#define VEHICLE_ST_USE           (1)
 #define VEHICLE_ST_ACC           (2)
 #define VEHICLE_ST_BRK           (3)
+
+
+#define VEHICLE_BRK_TIME         (20)
 
 
 #define SEC_TO_NSEC              (1000000000)

@@ -54,7 +54,7 @@ DDSDomainParticipant* Publisher::GetParticipant ()
 
     /* To customize participant QoS, use the configuration file USER_QOS_PROFILES.xml */
     m_Participant = DDSTheParticipantFactory->create_participant(0, DDS_PARTICIPANT_QOS_DEFAULT, 
-                                                               NULL /* listener */, DDS_STATUS_MASK_NONE);
+                                                                 NULL /* listener */, DDS_STATUS_MASK_NONE);
     assert (m_Participant != NULL);
 
     return m_Participant;    

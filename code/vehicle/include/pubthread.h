@@ -29,21 +29,64 @@ struct RealTimeInfo
 class PubThread
 {
 private:
-    Vehicle *m_Vehicle;
-	Route *m_Route;
-    
+    Vehicle *m_Vehicle;    
+	Route *m_Route;      
     int m_CurStop;
+    
+    int m_AccProb;
+    int m_BrkProb;
+
+    int m_HavProb;
+    int m_LgtProb;
 
     PositionPublisher *m_PosPublisher;
     BreakownPublisher *m_BrkPublisher;
     AccidentPublisher *m_AccPublisher;
     
 public:
-    PubThread(Vehicle *Bus, Route *Rt, int StartStop=0)
+    PubThread(Vehicle *Bus, Route *Rt, 
+                float AccProb, float BrkProb,
+                float HavProb, float LgtProb)
     {
         m_Vehicle = Bus;
-		m_Route   = Rt;
-        m_CurStop = StartStop;
+		m_Route   = Rt;        
+        m_CurStop = 0;
+        
+        if (AccProb > 0.0001 && AccProb <= 1.0)
+        {
+            m_AccProb = 1/AccProb;
+        }
+        else
+        {
+            m_AccProb = 1/0.1;
+        }
+
+        if (BrkProb > 0.0001 && BrkProb <= 1.0)
+        {
+            m_BrkProb = 1/BrkProb;
+        }
+        else
+        {
+            m_BrkProb = 1/0.05;
+        }
+
+        if (HavProb > 0.0001 && HavProb <= 1.0)
+        {
+            m_HavProb = 1/HavProb;
+        }
+        else
+        {
+            m_HavProb = 1/0.1;
+        }
+
+        if (LgtProb > 0.0001 && LgtProb <= 1.0)
+        {
+            m_LgtProb = 1/LgtProb;
+        }
+        else
+        {
+            m_LgtProb = 1/0.25;
+        }
 
         m_PosPublisher = new PositionPublisher (string(MESSAGE_TOPIC_POSITION));
         assert (m_PosPublisher != NULL);
@@ -79,23 +122,6 @@ public:
 
 private:
 
-    inline void RemoveBus ()
-    {
-        m_Route->ReleaseBus (m_Vehicle);
-        m_Vehicle = NULL;
-    }
-
-    inline bool AddBus (string &BusName)
-    {
-        m_Vehicle = m_Route->AllotBus ();
-        if (m_Vehicle == NULL)
-        {
-            return false;
-        }
-        
-        return true;
-    }
-
     inline string GetTime ()
     {
         char Buf[64];
@@ -106,14 +132,18 @@ private:
         return string (Buf);
     }
 
-    bool IsAccHappen ();
+    bool IsThreeRound ();
+
+    bool IsAccHappen (int Stop);
     int SendAccMsg (RealTimeInfo *RtInfo);
     
-    bool IsBrkHappen ();
+    bool IsBrkHappen (int Stop);
     int SendBrkMsg (RealTimeInfo *RtInfo);
     
-    bool IsLightTrafic ();
-    bool IsHeavyTrafic ();
+    bool IsLightTrafic (int Stop);
+    bool IsHeavyTrafic (int Stop);
+
+    Vehicle* AllotVehicle ();
 
     int SendPosMsg (RealTimeInfo *RtInfo);
 

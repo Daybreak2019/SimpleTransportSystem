@@ -23,6 +23,50 @@ static void SetQos (int MaxObjects)
     return;
 }
 
+inline string GetTime (time_t time)
+{
+    char Buf[64];
+    strftime(Buf, sizeof(Buf), "%m/%d/%Y %X", localtime(&time));
+    return string (Buf);
+}
+
+void *BusRepairthread (void* Arg)
+{
+    vector<Route> *RtSet = (vector<Route> *)Arg;
+
+    while (1)
+    {
+        for (vector<Route>::iterator It = RtSet->begin(); It != RtSet->end(); It++)
+        {
+            Route *R = &(*It);
+            for (vector<Vehicle>::iterator bIt = R->BusBegin (); bIt != R->BusEnd (); bIt++)
+            {
+                Vehicle *Bus = &(*bIt);
+                if (Bus->GetStatus () != VEHICLE_ST_BRK)
+                {
+                    continue;
+                }
+                
+                int CurTime = time (0);
+                int BrkTime = Bus->GetBrkTime ();
+                if (CurTime-BrkTime >= VEHICLE_BRK_TIME)
+                {
+                    R->SetBusStatus (Bus, VEHICLE_ST_IDLE);
+
+                    printf ("%s:%s added to backup list. BrkTime:%s, FixedTime:%s\r\n",
+                            R->GetRouteName (), Bus->GetBusName (),
+                            GetTime ((time_t)BrkTime).c_str(), GetTime((time_t)CurTime).c_str());
+                }
+            }         
+        }
+
+        sleep (1);
+    }
+
+    return NULL;
+}
+
+
 
 void *PubthreadProc (void* Arg)
 {
@@ -32,9 +76,11 @@ void *PubthreadProc (void* Arg)
     return NULL;
 }
 
-void PubLauncher (vector<Route> &RtSet)
+void PubLauncher (vector<Route> &RtSet, float AccRate, float BrkRate, 
+                     float HavRate, float LgtRate)
 {
     int Ret;
+    int BusIndex;
     pthread_t Tid;
     vector<PubThread *> PubThreadSet;
 
@@ -42,35 +88,97 @@ void PubLauncher (vector<Route> &RtSet)
     {
         Route *R = &(*It);
 
-        for (vector<Vehicle>::iterator bIt = R->BusBegin (); bIt != R->BusEnd (); bIt++)
+        BusIndex = R->GetBusNum ();
+        cout<<R->GetRouteName ()<<", BusNum="<<BusIndex<<endl;
+        while (BusIndex > 0)
         {
-            Vehicle *Bus = &(*bIt);
-            if (Bus->GetAttr () == VEHICLE_ATTR_BACKUP)
+            Vehicle *Bus = R->AllotBus ();
+            if (Bus == NULL)
             {
-                continue;
+                break;
             }
 
-            cout<<R->GetRouteName ()<<", "<<Bus->GetBusName ()<<endl;
-            
-            PubThread *PubThr = new PubThread (Bus, R);
+            cout<<R->GetRouteName ()<<", "<<Bus->GetBusName ()<<endl;            
+            PubThread *PubThr = new PubThread (Bus, R, AccRate, BrkRate, HavRate, LgtRate);
             assert (PubThr != NULL);
             
             Ret = pthread_create(&Tid, NULL, PubthreadProc, PubThr);
             assert (Ret == 0);
 
             PubThreadSet.push_back (PubThr);
+            BusIndex--;
         }
     }
+
+    Ret = pthread_create(&Tid, NULL, BusRepairthread, &RtSet);
+    assert (Ret == 0);
     
     while (1);
 }
 
+void Help ()
+{
+    printf("************************************************\r\n");
+    printf("*                help information              *\r\n");
+    printf("************************************************\r\n"); 
+    printf("-a: <Accident Probability[0-1]> \r\n");
+    printf("-b  <Breakdown Probability[0-1]> \r\n");
+    printf("-h: <Heavy Traffic Probability[0-1]> \r\n");
+    printf("-l: <Light Traffic Probability[0-1]> \r\n");
+    printf("************************************************\r\n\r\n");
+
+    return;
+}
+
+
 int main(int argc, char *argv[])
 {
+    char ch;
+    float BrkRate = 0;
+    float AccRate = 0;
+    float HavRate = 0;
+    float LgtRate = 0;
+
+    while((ch = getopt(argc, argv, "b:a:h:l:H")) != -1)
+    {
+        switch(ch)
+        {
+            case 'a':
+            {
+                AccRate = atof(optarg);
+                break;
+            }
+            case 'b':
+            {
+                BrkRate = atof(optarg);
+                break;
+            }
+            case 'h':
+            {
+                HavRate = atof(optarg);
+                break;
+            }
+            case 'l':
+            {
+                LgtRate = atof(optarg);
+                break;
+            }
+            case 'H':
+            {
+                Help ();
+                return 0;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+    
     SetQos (4096);
     
     /* Rread pub.properties */
-    Property Pro ("../pub.properties");
+    Property Pro ("pub.properties");
     Pro.Dump ();
 
     /* Init Route information */
@@ -87,7 +195,7 @@ int main(int argc, char *argv[])
 
 
     /* start pubthread */
-    PubLauncher (RtSet);
+    PubLauncher (RtSet, AccRate, BrkRate, HavRate, LgtRate);
 
     return 0;
 }

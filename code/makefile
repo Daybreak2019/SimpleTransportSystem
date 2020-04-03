@@ -50,7 +50,7 @@ export LIBS = $(SYSLIBS)\
               -L$(NDDSHOME)/lib/$(TARGET_ARCH) -lnddscpp$(SHAREDLIB_SFX)$(DEBUG_SFX)\
               -lnddsc$(SHAREDLIB_SFX)$(DEBUG_SFX) -lnddscore$(SHAREDLIB_SFX)$(DEBUG_SFX)\
 
-SUBDIRS = message vehicle passanger
+SUBDIRS = message vehicle passanger operator
 
 $(SUBDIRS):init
 	for subdir in $(SUBDIRS);\
