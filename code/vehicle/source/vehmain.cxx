@@ -36,12 +36,22 @@ void *BusRepairthread (void* Arg)
 
     while (1)
     {
+        int VehDeadNum = 0;
+        int VehNum = 0;
         for (vector<Route>::iterator It = RtSet->begin(); It != RtSet->end(); It++)
         {
             Route *R = &(*It);
+
+            VehNum += R->GetBusNum ();
             for (vector<Vehicle>::iterator bIt = R->BusBegin (); bIt != R->BusEnd (); bIt++)
             {
                 Vehicle *Bus = &(*bIt);
+                
+                if (Bus->GetStatus () == VEHICLE_ST_DEAD)
+                {
+                    VehDeadNum++;
+                }
+                
                 if (Bus->GetStatus () != VEHICLE_ST_BRK)
                 {
                     continue;
@@ -58,6 +68,12 @@ void *BusRepairthread (void* Arg)
                             GetTime ((time_t)BrkTime).c_str(), GetTime((time_t)CurTime).c_str());
                 }
             }         
+        }
+
+        if (VehDeadNum == VehNum)
+        {
+            printf ("BusRepairthread exit....\r\n");
+            break;
         }
 
         sleep (1);
@@ -110,10 +126,13 @@ void PubLauncher (vector<Route> &RtSet, float AccRate, float BrkRate,
         }
     }
 
-    Ret = pthread_create(&Tid, NULL, BusRepairthread, &RtSet);
-    assert (Ret == 0);
-    
-    while (1);
+    //Ret = pthread_create(&Tid, NULL, BusRepairthread, );
+    //assert (Ret == 0);  
+    //while (1);
+
+    BusRepairthread (&RtSet);
+
+    return;
 }
 
 void Help ()

@@ -41,6 +41,7 @@
 #define VEHICLE_ST_USE           (1)
 #define VEHICLE_ST_ACC           (2)
 #define VEHICLE_ST_BRK           (3)
+#define VEHICLE_ST_DEAD          (4)
 
 
 #define VEHICLE_BRK_TIME         (20)

@@ -199,16 +199,11 @@ void PubThread::Start ()
         }
         else if (IsThreeRound ())
         {
-            /* allot a new bus then remove current bus from the route */
-            Vehicle *NewBus = AllotVehicle ();
-
-            m_Vehicle->ResetRoundNum ();
-            m_Route->SetBusStatus (m_Vehicle, VEHICLE_ST_IDLE);
-            printf ("===> %s 3 round on %s, changing %s to %s on %s \r\n",
-                    m_Vehicle->GetBusName (), m_Route->GetRouteName (),
-                    m_Vehicle->GetBusName (), NewBus->GetBusName (), m_Route->GetRouteName ());
+            m_Route->SetBusStatus (m_Vehicle, VEHICLE_ST_DEAD);
+            printf ("===> %s runs three rounds on %s, ready to exit... \r\n",
+                    m_Vehicle->GetBusName (), m_Route->GetRouteName ());
             
-            m_Vehicle = NewBus;            
+            break;          
         }
 
         /* publish position msg */

@@ -54,6 +54,10 @@ public:
     void StartBrkListen ();
     void StartPosListen ();
 
+    void PosMsgProc (Position *PosMsg);
+    void AccMsgProc (Accident *AccMsg);
+    void BrkMsgProc (Breakdown *BrkMsg);
+
 };
 
 #endif
