@@ -14,21 +14,31 @@
 
 class BreakownPublisher:public Publisher
 {
+private:
+    Breakdown *m_BrkMsg;
+    
 public:
     BreakownPublisher(string MsgTopic):Publisher(MsgTopic)
     {
+        m_BrkMsg = BreakdownTypeSupport::create_data();
+        assert (m_BrkMsg != NULL);
+        
         Init ();
     }
 
     ~BreakownPublisher() 
     {
+        if (m_BrkMsg)
+        {
+            BreakdownTypeSupport::delete_data(m_BrkMsg);
+        }
+        
         Shutdown ();        
     }
 
     int PublishMsg(char *TimeStamp, char *Route, char *Vehicle, int StopNumber)
     {
         int Ret = RT_FAIL;
-        Breakdown *BrkMsg = NULL;
         DDS_InstanceHandle_t InstanceHdl = DDS_HANDLE_NIL;
 
         BreakdownDataWriter *BkWriter = (BreakdownDataWriter *)m_Writer;
@@ -38,38 +48,24 @@ public:
         }
 
         /* Create data sample for writing */
-        BrkMsg = BreakdownTypeSupport::create_data();
-        if (BrkMsg == NULL) 
-        {
-            fprintf(stderr, "BreakdownTypeSupport::create_data error\n");
-            return RT_FAIL;
-        }
-
-        strncpy (BrkMsg->timestamp, TimeStamp, BRK_BUF_LEN);
-        strncpy (BrkMsg->route, Route, BRK_BUF_LEN);
-        strncpy (BrkMsg->vehicle, Vehicle, BRK_BUF_LEN);
-        BrkMsg->stopNumber  = StopNumber;
+        strncpy (m_BrkMsg->timestamp, TimeStamp, BRK_BUF_LEN);
+        strncpy (m_BrkMsg->route, Route, BRK_BUF_LEN);
+        strncpy (m_BrkMsg->vehicle, Vehicle, BRK_BUF_LEN);
+        m_BrkMsg->stopNumber  = StopNumber;
         
         /* For a data type that has a key, if the same instance is going to be
            written multiple times, initialize the key here
            and register the keyed instance prior to writing */       
         // instance_handle = Position_writer->register_instance(*instance);       
-        Ret = BkWriter->write(*BrkMsg, InstanceHdl);
+        Ret = BkWriter->write(*m_BrkMsg, InstanceHdl);
         if (Ret != DDS_RETCODE_OK) 
         {
             fprintf(stderr, "write error %d\n", Ret);
         }
         else
         {
-            cout<<"----------------------------------------------------------\r\n";
-            cout<<"BreakdownMessage:";
-            BreakdownTypeSupport::print_data(BrkMsg); 
-        }
-        
-        /* Delete data sample */
-        if (BreakdownTypeSupport::delete_data(BrkMsg) != DDS_RETCODE_OK) 
-        {
-            fprintf(stderr, "BreakdownTypeSupport::delete_data error \n");
+            printf ("%s published a breakdown message at stop%d on the route %s at %s\r\n",
+                    m_BrkMsg->vehicle, m_BrkMsg->stopNumber, m_BrkMsg->route, m_BrkMsg->timestamp);
         }
 
         return Ret;

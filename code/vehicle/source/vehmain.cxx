@@ -100,12 +100,12 @@ void PubLauncher (vector<Route> &RtSet, float AccRate, float BrkRate,
     pthread_t Tid;
     vector<PubThread *> PubThreadSet;
 
+    cout<<"Lanching publishers...\r\n";
     for (vector<Route>::iterator It = RtSet.begin(); It != RtSet.end(); It++)
     {
         Route *R = &(*It);
 
         BusIndex = R->GetBusNum ();
-        cout<<R->GetRouteName ()<<", BusNum="<<BusIndex<<endl;
         while (BusIndex > 0)
         {
             Vehicle *Bus = R->AllotBus ();
@@ -113,8 +113,7 @@ void PubLauncher (vector<Route> &RtSet, float AccRate, float BrkRate,
             {
                 break;
             }
-
-            cout<<R->GetRouteName ()<<", "<<Bus->GetBusName ()<<endl;            
+        
             PubThread *PubThr = new PubThread (Bus, R, AccRate, BrkRate, HavRate, LgtRate);
             assert (PubThr != NULL);
             
@@ -130,6 +129,7 @@ void PubLauncher (vector<Route> &RtSet, float AccRate, float BrkRate,
     //assert (Ret == 0);  
     //while (1);
 
+    cout<<"All buses have started. Waiting for them to terminate...\r\n";
     BusRepairthread (&RtSet);
 
     return;

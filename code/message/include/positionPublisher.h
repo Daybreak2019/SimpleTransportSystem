@@ -66,9 +66,8 @@ public:
         }
         else
         {
-            cout<<"----------------------------------------------------------\r\n";
-            cout<<"PositionMessage:";
-            PositionTypeSupport::print_data(m_PosMsg); 
+            printf ("%s published a position message at stop%d on the route %s at %s\r\n",
+                    m_PosMsg->vehicle, m_PosMsg->stopNumber, m_PosMsg->route, m_PosMsg->timestamp);
         }
 
         return Ret;

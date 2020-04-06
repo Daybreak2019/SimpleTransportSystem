@@ -45,24 +45,25 @@ void Passanger::PosMsgProc (Position *PosMsg)
         if (m_StartStop == m_EndStop && m_EndStop == PosMsg->stopNumber)
         {
             /* the bus breakdown at the end stop */
-            printf ("[%s]%s: arrived at stop%d on %s of %s\r\n", 
-                    PosMsg->timestamp, m_Name.c_str(),
-                    PosMsg->stopNumber, PosMsg->vehicle, PosMsg->route);
+            printf ("%s arriving at destination by %s at %s\r\n", 
+                    m_Name.c_str(), PosMsg->vehicle, PosMsg->timestamp);
             /* exit */
             exit (0);
         }
         else if (m_StartStop == PosMsg->stopNumber)
         {
             m_Bus = string(PosMsg->vehicle);
-            printf ("[%s]%s: gets on %s at stop%d of %s\r\n", 
-                    PosMsg->timestamp, m_Name.c_str(),
-                    PosMsg->vehicle, PosMsg->stopNumber, PosMsg->route);
+            m_NumStop = PosMsg->numStops;
+            
+            printf ("%s getting on %s at stop%d, at %s, %s, %s\r\n", 
+                    m_Name.c_str(), PosMsg->vehicle, PosMsg->stopNumber,
+                    PosMsg->timestamp, PosMsg->trafficConditions, LeftStop(PosMsg->stopNumber).c_str());
         }
         else
         {
-            printf ("[%s]%s: %s passes stop%d of %s\r\n", 
-                    PosMsg->timestamp, m_Name.c_str(),
-                    PosMsg->vehicle, PosMsg->stopNumber, PosMsg->route);
+            printf ("......%s arriving at stop #%d, at %s, %s\r\n", 
+                    PosMsg->vehicle, PosMsg->stopNumber,
+                    PosMsg->timestamp, PosMsg->trafficConditions);
         }
     }
     else
@@ -76,15 +77,14 @@ void Passanger::PosMsgProc (Position *PosMsg)
         /* the same bus, check if arriving at dst stop */
         if (m_EndStop != PosMsg->stopNumber)
         {
-            printf ("[%s]%s: %s passes stop%d of %s\r\n", 
-                    PosMsg->timestamp, m_Name.c_str(),
-                    PosMsg->vehicle, PosMsg->stopNumber, PosMsg->route);
+            printf ("%s on %s arriving at stop #%d, at %s, %s, %s\r\n", 
+                    m_Name.c_str(), PosMsg->vehicle, PosMsg->stopNumber,
+                    PosMsg->timestamp, PosMsg->trafficConditions, LeftStop(PosMsg->stopNumber).c_str());
         }
         else
         {
-            printf ("[%s]%s: arrived at stop%d on %s of %s\r\n", 
-                    PosMsg->timestamp, m_Name.c_str(),
-                    PosMsg->stopNumber, PosMsg->vehicle, PosMsg->route);
+            printf ("%s arriving at destination by %s at %s\r\n", 
+                    m_Name.c_str(), PosMsg->vehicle, PosMsg->timestamp);
             /* exit */
             exit (0);
         }
@@ -104,9 +104,8 @@ void Passanger::AccMsgProc (Accident *AccMsg)
     
     if (m_Bus == "")
     {
-        printf ("[%s]%s: %s occur accident at stop%d of %s\r\n", 
-                AccMsg->timestamp, m_Name.c_str(),
-                AccMsg->vehicle, AccMsg->stopNumber, AccMsg->route);
+        printf ("......%s arriving at stop #%d, at %s, accident.\r\n", 
+                AccMsg->vehicle, AccMsg->stopNumber, AccMsg->timestamp);
     }
     else
     {
@@ -116,9 +115,9 @@ void Passanger::AccMsgProc (Accident *AccMsg)
             return;
         }
 
-        printf ("[%s]%s: %s occur accident at stop%d of %s, waiting for fixing...\r\n", 
-                AccMsg->timestamp, m_Name.c_str(),
-                AccMsg->vehicle, AccMsg->stopNumber, AccMsg->route);
+        printf ("%s on %s arriving at stop #%d, at %s, accident, %s\r\n", 
+                m_Name.c_str(), AccMsg->vehicle, 
+                AccMsg->stopNumber, AccMsg->timestamp, LeftStop(AccMsg->stopNumber).c_str());
     }
     
     return;
@@ -134,9 +133,8 @@ void Passanger::BrkMsgProc (Breakdown *BrkMsg)
 
     if (m_Bus == "")
     {
-        printf ("[%s]%s: %s breakdown at stop%d of %s\r\n", 
-                BrkMsg->timestamp, m_Name.c_str(),
-                BrkMsg->vehicle, BrkMsg->stopNumber, BrkMsg->route);
+        printf ("......%s arriving at stop #%d, at %s, accident.\r\n", 
+                BrkMsg->vehicle, BrkMsg->stopNumber, BrkMsg->timestamp);
     }
     else
     {
@@ -150,9 +148,9 @@ void Passanger::BrkMsgProc (Breakdown *BrkMsg)
         m_Bus = "";
         m_StartStop = BrkMsg->stopNumber;
 
-        printf ("[%s]%s: %s breakdown at stop%d of %s, waiting for another bus...\r\n", 
-                BrkMsg->timestamp, m_Name.c_str(),
-                BrkMsg->vehicle, BrkMsg->stopNumber, BrkMsg->route);
+        printf ("%s on %s arriving at stop #%d, at %s, breakdown, %s\r\n", 
+                m_Name.c_str(), BrkMsg->vehicle, 
+                BrkMsg->stopNumber, BrkMsg->timestamp, LeftStop(BrkMsg->stopNumber).c_str());
     }
 
     

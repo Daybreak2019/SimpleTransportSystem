@@ -117,6 +117,7 @@ void PubThread::Start ()
     float TimeBtStops = m_Route->GetTimeBtStops ();
     RealTimeInfo RtInfo;    
 
+    printf ("Thread %s started.\r\n", m_Vehicle->GetBusName ());
     while (CurStop <= StopNum)
     {  
         /*-------------------------------------------------*/
@@ -125,18 +126,18 @@ void PubThread::Start ()
         if (IsLightTrafic (CurStop))
         {
             RtInfo.TimeBetweenStops  = m_Route->GetTimeBtStops () * (1 - 0.25);
-            RtInfo.TrafficConditions = (char*)"Light traffic";
+            RtInfo.TrafficConditions = (char*)"Light";
         }
         else if (IsHeavyTrafic (CurStop))
         {
             RtInfo.TimeBetweenStops = m_Route->GetTimeBtStops () * (1 + 0.5);
-            RtInfo.TrafficConditions = (char*)"Heavy traffic";
+            RtInfo.TrafficConditions = (char*)"Heavy";
         }
         else
         {
             /* Normal time: Time between stops */
             RtInfo.TimeBetweenStops = m_Route->GetTimeBtStops ();
-            RtInfo.TrafficConditions = (char*)"Normal traffic";
+            RtInfo.TrafficConditions = (char*)"Normal";
         }
 
         int Second = (int)RtInfo.TimeBetweenStops;
@@ -173,16 +174,16 @@ void PubThread::Start ()
 
             /* remove the bus from the route */
             m_Route->SetBusStatus (m_Vehicle, VEHICLE_ST_BRK);
+            printf ("%s stoped. a backup should arrive in %d seconds \r\n",
+                    m_Vehicle->GetBusName (), VEHICLE_BRK_BACKUP);
 
             /* wait for 15 second, and */
-            DDS_Duration_t TransPeriod = {15, 0};
+            DDS_Duration_t TransPeriod = {VEHICLE_BRK_BACKUP, 0};
             NDDSUtility::sleep(TransPeriod);
 
             /* allot fail, loop waiting */
             Vehicle *NewBus = AllotVehicle ();
-            printf ("===> %s breakdown on %s, changing %s to %s on %s \r\n",
-                    m_Vehicle->GetBusName (), m_Route->GetRouteName (),
-                    m_Vehicle->GetBusName (), NewBus->GetBusName (), m_Route->GetRouteName ());
+            
             m_Vehicle = NewBus;
         }
         else if (IsAccHappen (CurStop))
@@ -200,7 +201,7 @@ void PubThread::Start ()
         else if (IsThreeRound ())
         {
             m_Route->SetBusStatus (m_Vehicle, VEHICLE_ST_DEAD);
-            printf ("===> %s runs three rounds on %s, ready to exit... \r\n",
+            printf ("===> %s runs three rounds on %s, exitting... \r\n",
                     m_Vehicle->GetBusName (), m_Route->GetRouteName ());
             
             break;          

@@ -30,30 +30,33 @@ void Operator::StartPosListen ()
     return;
 }
 
-
+/*"MessageType", "Route", "Vehicle", "Traffic", "Stop#","#Stops", "TimeBetweenStops", "Fill%", "TimeStamp"); */
 void Operator::PosMsgProc (Position *PosMsg)
 {
-    printf ("[%s]%s: %s arrived at stop%d of %s\r\n", 
-             PosMsg->timestamp, "Operator",
-             PosMsg->vehicle, PosMsg->stopNumber, PosMsg->route);
+    printf ("%-12s %-12s %-8s %-8s  %-8d %-8d %-16.2f %-8d %-16s\r\n",
+            "Position",
+            PosMsg->route, PosMsg->vehicle, PosMsg->trafficConditions, PosMsg->stopNumber,
+            PosMsg->numStops, PosMsg->timeBetweenStops, PosMsg->fillInRatio, PosMsg->timestamp);
     return;
 }
 
 
 void Operator::AccMsgProc (Accident *AccMsg)
 {
-    printf ("[%s]%s: %s occur accident at stop%d of %s\r\n", 
-            AccMsg->timestamp, "Operator",
-            AccMsg->vehicle, AccMsg->stopNumber, AccMsg->route);
+    printf ("%-12s %-12s %-8s %-8s  %-8d %-8s %-16s %-8s %-16s\r\n",
+            "Accident",
+            AccMsg->route, AccMsg->vehicle, " ", AccMsg->stopNumber,
+            " ", " ", " ", AccMsg->timestamp);
     
     return;
 }
 
 void Operator::BrkMsgProc (Breakdown *BrkMsg)
 {
-    printf ("[%s]%s: %s breakdown at stop%d of %s\r\n", 
-            BrkMsg->timestamp, "Operator",
-            BrkMsg->vehicle, BrkMsg->stopNumber, BrkMsg->route);
+    printf ("%-12s %-12s %-8s %-8s  %-8d %-8s %-16s %-8s %-16s\r\n",
+            "Breakdown",
+            BrkMsg->route, BrkMsg->vehicle, " ", BrkMsg->stopNumber,
+            " ", " ", " ", BrkMsg->timestamp);
     
     return;
 }

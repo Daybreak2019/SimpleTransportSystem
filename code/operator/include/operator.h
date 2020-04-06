@@ -27,7 +27,9 @@ private:
 public:
     Operator()
     {
-
+        printf ("%-12s %-12s %-8s %-8s  %-8s %-8s %-16s %-8s %-16s\r\n",
+                "MessageType", "Route", "Vehicle", "Traffic", "Stop#",
+                "#Stops", "TimeBetweenStops", "Fill%", "TimeStamp");
     }
 
     ~Operator() 

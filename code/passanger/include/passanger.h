@@ -24,6 +24,7 @@ private:
     string m_Bus;
     int    m_StartStop;
     int    m_EndStop;
+    int    m_NumStop;
     
     AccidentSubscriber *m_AccSubscriber;
     PositionSubscriber *m_PosSubscriber;
@@ -37,6 +38,8 @@ public:
         m_Bus       = "";
         m_StartStop = StartStop;
         m_EndStop   = EndStop;
+
+        cout<<"Waiting for the bus...\r\n";
     }
 
     ~Passanger() 
@@ -79,6 +82,23 @@ private:
     inline bool IsBoaredBus (string CurBus)
     {
         return (bool)(m_Bus == CurBus);
+    }
+
+    inline string LeftStop (int CurStop)
+    {
+        char LeftS[32];
+        
+        int Left = ((m_EndStop + m_NumStop) - CurStop)%m_NumStop;
+        if (Left > 1)
+        {
+            sprintf (LeftS, "%d stops left", Left);
+        }
+        else
+        {
+            sprintf (LeftS, "%d stop left", Left);
+        }
+
+        return string(LeftS);
     }
 };
 

@@ -45,6 +45,8 @@
 
 
 #define VEHICLE_BRK_TIME         (20)
+#define VEHICLE_BRK_BACKUP       (15)
+
 
 
 #define SEC_TO_NSEC              (1000000000)

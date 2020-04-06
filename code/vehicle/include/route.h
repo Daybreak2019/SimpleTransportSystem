@@ -42,10 +42,16 @@ public:
 		m_NumStops      = NumStops;
 		m_TimeBtnStops  = TimeBtnStops;
 
-        //cout<<m_RouteName<<", "<<m_NumStops<<", "<<m_TimeBtnStops<<", (";
+        int Index = 0;
         for (vector<string>::iterator It = Buses.begin(); It != Buses.end(); It++)
         {
             m_Buses.push_back (Vehicle(*It));
+            
+            Index++;
+            if (Index == m_NumVehicles+1)
+            {
+                printf ("Add vehicle%s to backup for route %s.\r\n", It->c_str(), m_RouteName.c_str());
+            }
         }
 
         pthread_mutex_init(&m_Mutex, NULL);
