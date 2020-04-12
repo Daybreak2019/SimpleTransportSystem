@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Operator:public Application
+class Operator:public AppSubscriber
 {   
 public:
     Operator()

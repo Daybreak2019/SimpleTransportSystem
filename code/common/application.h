@@ -17,7 +17,7 @@
 
 using namespace std;
 
-class Application 
+class AppSubscriber 
 {
 public:
     virtual void PosMsgProc (Position *PosMsg) = 0;
@@ -28,10 +28,10 @@ public:
 class PositionListener : public ReadListener 
 {
 private:
-    Application *m_Application;
+    AppSubscriber *m_Application;
     
 public:
-    PositionListener (Application *App)
+    PositionListener (AppSubscriber *App)
     {
         m_Application = App;
     }
@@ -84,10 +84,10 @@ public:
 class BreakdownListener : public ReadListener 
 {
 private:
-    Application *m_Application;
+    AppSubscriber *m_Application;
 
 public:
-    BreakdownListener (Application *App)
+    BreakdownListener (AppSubscriber *App)
     {
         m_Application = App;
     }
@@ -146,10 +146,10 @@ public:
 class AccidentListener : public ReadListener 
 {
 private:
-    Application *m_Application;
+    AppSubscriber *m_Application;
 
 public:
-    AccidentListener (Application *App)
+    AccidentListener (AppSubscriber *App)
     {
         m_Application = App;
     }

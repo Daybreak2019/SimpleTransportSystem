@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Passanger:public Application
+class Passanger:public AppSubscriber
 {
 private:
     string m_Name;
