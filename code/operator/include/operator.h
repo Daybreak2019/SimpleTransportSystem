@@ -7,23 +7,13 @@
 
 #ifndef _PASSANGER_H_
 #define _PASSANGER_H_
-#include "macro.h"
-#include "positionSubcriber.h"
-#include "accidentSubcriber.h"
-#include "breakdownSubcriber.h"
-#include "optlistener.h"
+#include "application.h"
 
 
 using namespace std;
 
-class Operator
-{
-private:
-
-    AccidentSubscriber *m_AccSubscriber;
-    PositionSubscriber *m_PosSubscriber;
-    BreakownSubscriber *m_BrkSubscriber;
-    
+class Operator:public Application
+{   
 public:
     Operator()
     {
@@ -34,27 +24,10 @@ public:
 
     ~Operator() 
     {
-        if (m_AccSubscriber)
-        {
-            delete m_AccSubscriber;
-        }
-
-        if (m_PosSubscriber)
-        {
-            delete m_PosSubscriber;
-        }
-
-        if (m_BrkSubscriber)
-        {
-            delete m_BrkSubscriber;
-        }    
+    
     }
     
 public:
-    
-    void StartAccListen ();
-    void StartBrkListen ();
-    void StartPosListen ();
 
     void PosMsgProc (Position *PosMsg);
     void AccMsgProc (Accident *AccMsg);

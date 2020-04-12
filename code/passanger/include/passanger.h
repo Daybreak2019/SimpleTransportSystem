@@ -7,16 +7,11 @@
 
 #ifndef _PASSANGER_H_
 #define _PASSANGER_H_
-#include "macro.h"
-#include "positionSubcriber.h"
-#include "accidentSubcriber.h"
-#include "breakdownSubcriber.h"
-#include "paglistener.h"
-
+#include "application.h"
 
 using namespace std;
 
-class Passanger
+class Passanger:public Application
 {
 private:
     string m_Name;
@@ -25,10 +20,6 @@ private:
     int    m_StartStop;
     int    m_EndStop;
     int    m_NumStop;
-    
-    AccidentSubscriber *m_AccSubscriber;
-    PositionSubscriber *m_PosSubscriber;
-    BreakownSubscriber *m_BrkSubscriber;
     
 public:
     Passanger(string Name, string Route, int StartStop,   int EndStop)
@@ -44,28 +35,10 @@ public:
 
     ~Passanger() 
     {
-        if (m_AccSubscriber)
-        {
-            delete m_AccSubscriber;
-        }
-
-        if (m_PosSubscriber)
-        {
-            delete m_PosSubscriber;
-        }
-
-        if (m_BrkSubscriber)
-        {
-            delete m_BrkSubscriber;
-        }    
+  
     }
     
 public:
-    
-    void StartAccListen ();
-    void StartBrkListen ();
-    void StartPosListen ();
-
     
     void PosMsgProc (Position *PosMsg);
     void AccMsgProc (Accident *PosMsg);

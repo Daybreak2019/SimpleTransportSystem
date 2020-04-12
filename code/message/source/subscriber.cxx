@@ -5,7 +5,7 @@
 //##############################################################################
 #include "subscriber.h"
 
-inline int Subscriber::Shutdown()
+int Subscriber::Shutdown()
 {
     DDS_ReturnCode_t retcode;
     int status = RT_SUCCESS;
