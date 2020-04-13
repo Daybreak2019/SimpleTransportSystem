@@ -10,15 +10,9 @@ static void SetQos (int MaxObjects)
 {
     DDS_DomainParticipantFactoryQos factoryQoS;
     DDSTheParticipantFactory->get_qos(factoryQoS);
-    
-    cout<<"====>read resource_limits.max_objects_per_thread = "
-        <<factoryQoS.resource_limits.max_objects_per_thread<<endl;
         
     factoryQoS.resource_limits.max_objects_per_thread = MaxObjects;
     DDSTheParticipantFactory->set_qos(factoryQoS);
-
-    cout<<"====>write resource_limits.max_objects_per_thread = "
-        <<factoryQoS.resource_limits.max_objects_per_thread<<endl;
 
     return;
 }

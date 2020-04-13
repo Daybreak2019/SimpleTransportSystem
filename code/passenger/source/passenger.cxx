@@ -108,7 +108,7 @@ void Passenger::BrkMsgProc (Breakdown *BrkMsg)
 
     if (m_Bus == "")
     {
-        printf ("......%s arriving at stop #%d, at %s, accident.\r\n", 
+        printf ("......%s arriving at stop #%d, at %s, breakdown.\r\n", 
                 BrkMsg->vehicle, BrkMsg->stopNumber, BrkMsg->timestamp);
     }
     else
