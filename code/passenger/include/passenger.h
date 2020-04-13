@@ -5,13 +5,13 @@
 //# Description: repesent a passanger
 //##############################################################################
 
-#ifndef _PASSANGER_H_
-#define _PASSANGER_H_
+#ifndef _PASSENGER_H_
+#define _PASSENGER_H_
 #include "application.h"
 
 using namespace std;
 
-class Passanger:public AppSubscriber
+class Passenger:public AppSubscriber
 {
 private:
     string m_Name;
@@ -22,7 +22,7 @@ private:
     int    m_NumStop;
     
 public:
-    Passanger(string Name, string Route, int StartStop,   int EndStop)
+    Passenger(string Name, string Route, int StartStop,   int EndStop)
     {
         m_Name      = Name;
         m_Route     = Route;
@@ -33,7 +33,7 @@ public:
         cout<<"Waiting for the bus...\r\n";
     }
 
-    ~Passanger() 
+    ~Passenger() 
     {
   
     }

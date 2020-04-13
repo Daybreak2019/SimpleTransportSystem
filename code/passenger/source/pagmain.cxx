@@ -3,14 +3,14 @@
 //# Date  : 4/01/2020
 //# Description: main entry of passanger
 //##############################################################################
-#include "passanger.h"
+#include "passenger.h"
 #include "breakdownSubcriber.h"
 #include "accidentSubcriber.h"
 #include "positionSubcriber.h"
 
 void *AccListenerThread (void *Arg)
 {
-    Passanger *P = (Passanger *)Arg;
+    Passenger *P = (Passenger *)Arg;
     
     AccidentSubscriber AccSub (string(MESSAGE_TOPIC_ACCIDENT), new AccidentListener(P));
 
@@ -19,7 +19,7 @@ void *AccListenerThread (void *Arg)
 
 void *PosListenerThread (void *Arg)
 {
-    Passanger *P = (Passanger *)Arg;
+    Passenger *P = (Passenger *)Arg;
 
     PositionSubscriber PosSub (string(MESSAGE_TOPIC_POSITION), new PositionListener(P));
 
@@ -28,7 +28,7 @@ void *PosListenerThread (void *Arg)
 
 void *BrkListenerThread (void *Arg)
 {
-   Passanger *P = (Passanger *)Arg;
+   Passenger *P = (Passenger *)Arg;
 
    BreakownSubscriber BekSub (string(MESSAGE_TOPIC_BREAKDOWN), new BreakdownListener(P));
 
@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
 
     if (argc < 5)
     {
-        printf ("passanger <passanger-name> <route> <start-stop> <end-stop> \r\n");
-        printf ("range: route-Express1[1,4], route-Express2[1-6]");
+        printf ("passenger <passenger-name> <route> <start-stop> <end-stop> \r\n");
+        printf ("range: route-Express1[1,4], route-Express2[1-6]\r\n");
         return 0;
     }
 
@@ -82,13 +82,13 @@ int main(int argc, char *argv[])
     int End   = atoi(argv[4]);
     if (!Check (Route, Start, End))
     {
-        printf ("passanger <passanger-name> <route> <start-stop> <end-stop> \r\n");
-        printf ("range: route-Express1[1,4], route-Express2[1-6]");
+        printf ("passenger <passenger-name> <route> <start-stop> <end-stop> \r\n");
+        printf ("range: route-Express1[1,4], route-Express2[1-6]\r\n");
         return 0;
     }
     
 
-    Passanger P(Name, Route, Start, End);
+    Passenger P(Name, Route, Start, End);
 
     Ret = pthread_create(&Tid, NULL, AccListenerThread, &P);
     assert (Ret == 0);

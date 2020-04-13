@@ -34,7 +34,7 @@ CUR_LIBS = $(LIB_PATH)/libmessage.so $(LIBS)
 SOURCE_FILES = $(wildcard $(SOURCE_DIR)/*.cxx)
 OBJ_FILES = $(addprefix $(OBJ_PATH)/, $(addsuffix .o,$(notdir $(basename $(SOURCE_FILES)))))
 
-TARGET = $(BIN_PATH)/passanger
+TARGET = $(BIN_PATH)/passenger
 
 .PHONY:all clean
 

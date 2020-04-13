@@ -3,10 +3,10 @@
 //# Date  : 4/01/2020
 //# Description: simulate a passanger
 //##############################################################################
-#include "passanger.h"
+#include "passenger.h"
 
 
-void Passanger::PosMsgProc (Position *PosMsg)
+void Passenger::PosMsgProc (Position *PosMsg)
 {
     /* 1. check the route expected */
     if (!IsWantedRoute (string(PosMsg->route)))
@@ -69,7 +69,7 @@ void Passanger::PosMsgProc (Position *PosMsg)
 }
 
 
-void Passanger::AccMsgProc (Accident *AccMsg)
+void Passenger::AccMsgProc (Accident *AccMsg)
 {
     /* 1. check the route expected */
     if (!IsWantedRoute (string(AccMsg->route)))
@@ -98,7 +98,7 @@ void Passanger::AccMsgProc (Accident *AccMsg)
     return;
 }
 
-void Passanger::BrkMsgProc (Breakdown *BrkMsg)
+void Passenger::BrkMsgProc (Breakdown *BrkMsg)
 {
     /* 1. check the route expected */
     if (!IsWantedRoute (string(BrkMsg->route)))
